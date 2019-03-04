@@ -13,8 +13,16 @@ public class UserDao {
 	@Resource
 	private UserRepository userRepository;
 
+	@Transactional(Transactional.TxType.REQUIRED)
+	public void updateUserTransactionRequired(long userId) {
+		User user = loadUser(userId);
+		user.setStatus(user.getStatus() + 1);
+		user = userRepository.save(user);
+		System.out.println("Updated to state: " + user.getStatus());
+	}
+
 	@Transactional(Transactional.TxType.REQUIRES_NEW)
-	public void updateUser(long userId) {
+	public void updateUserTransactionRequiredNew(long userId) {
 		User user = loadUser(userId);
 		user.setStatus(user.getStatus() + 1);
 		user = userRepository.save(user);
